@@ -1,1 +1,1 @@
-# The Food Ordering System (POS) SaaS
+# The complete resource sharing application
