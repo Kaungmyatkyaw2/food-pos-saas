@@ -72,7 +72,7 @@ const SignupForm = () => {
                     <CustomFormField control={formControl} placeholder="johndoe@gmail.com" name="email" label="Email" />
                     <CustomFormField control={formControl} placeholder="*********" name="password" label="Password" />
                     <CustomFormField control={formControl} placeholder="*********" name="confirmPassword" label="Confirm Password" />
-                    <Button disabled={isLoading}>
+                    <Button type='submit' className='w-full' disabled={isLoading}>
                         {isLoading &&
                             <RotateCcw className="mr-2 h-4 w-4 animate-spin" />
                         }
