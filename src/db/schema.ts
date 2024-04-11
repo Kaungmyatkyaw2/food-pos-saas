@@ -10,11 +10,15 @@ import type { AdapterAccount } from "@auth/core/adapters";
 import { sql } from "drizzle-orm";
 
 export const users = pgTable("user", {
-  id: text("id").notNull().primaryKey(),
+  id: text("id")
+    .default(sql`gen_random_uuid()`)
+    .notNull()
+    .primaryKey(),
   name: text("name"),
-  email: text("email").notNull(),
+  email: text("email").notNull().unique(),
   emailVerified: timestamp("emailVerified", { mode: "date" }),
   image: text("image"),
+  password: text("password"),
 });
 
 export const accounts = pgTable(
@@ -67,3 +71,5 @@ export const resource = pgTable("resource", {
     .notNull()
     .primaryKey(),
 });
+
+export type User = typeof users.$inferSelect;
