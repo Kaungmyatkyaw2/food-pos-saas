@@ -50,7 +50,6 @@ const LoginForm = () => {
             }
 
         } catch (error) {
-            console.log(error)
             toast.error((error as Error).name)
         } finally {
             setIsLoading(false)
@@ -69,7 +68,7 @@ const LoginForm = () => {
                 <form autoComplete='off' onSubmit={form.handleSubmit(onSubmit)} className='space-y-5 '>
                     <CustomFormField control={formControl} placeholder="johndoe@gmail.com" name="email" label="Email" />
                     <CustomFormField control={formControl} placeholder="*********" name="password" label="Password" />
-                    <Button type='submit' className='w-full' disabled={isLoading}>
+                    <Button aria-label='login-button' type='submit' className='w-full' disabled={isLoading}>
                         {isLoading &&
                             <RotateCcw className="mr-2 h-4 w-4 animate-spin" />
                         }
