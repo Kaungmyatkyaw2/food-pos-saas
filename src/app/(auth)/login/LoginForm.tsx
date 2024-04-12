@@ -64,7 +64,7 @@ const LoginForm = () => {
                 <div>
                     <h1 className='font-bold sm:text-3xl text-2xl'>Welcome back!👋</h1>
                     <p className='text-gray-600 text-sm pt-1'>Logn in to your acc to explore more!</p>
-                </div>
+                </div>''
                 <form autoComplete='off' onSubmit={form.handleSubmit(onSubmit)} className='space-y-5 '>
                     <CustomFormField control={formControl} placeholder="johndoe@gmail.com" name="email" label="Email" />
                     <CustomFormField control={formControl} placeholder="*********" name="password" label="Password" />
