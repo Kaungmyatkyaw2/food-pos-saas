@@ -1,17 +1,11 @@
-"use client"
-
 import { Navbar } from '@/components/layout'
-import { AvatarFallback, AvatarImage, Avatar } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { signIn, useSession } from 'next-auth/react'
 import Image from 'next/image'
-import Link from 'next/link'
 import React from 'react'
 
 const Home = () => {
 
-  const { data } = useSession()
 
 
   return (
@@ -27,7 +21,7 @@ const Home = () => {
             <Input placeholder='Search course or resources by keyword....' className='border-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-0 flex-grow-1' />
             <Button className='rounded-full sm:w-[20%] w-fit'>Search</Button>
           </div>
-          <Image className='mt-[20px] mx-auto block' src={"/sidepic.svg"} height={500} width={500} alt='graduation-pic'/>
+          <Image className='mt-[20px] mx-auto block' src={"/sidepic.svg"} height={500} width={500} alt='graduation-pic' />
         </div>
       </section>
 
