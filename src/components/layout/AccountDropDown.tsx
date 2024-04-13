@@ -26,7 +26,7 @@ const AccountDropDown = () => {
         <>
             <DropdownMenu>
                 <DropdownMenuTrigger>
-                    <Avatar>
+                    <Avatar className="hover:ring">
                         <AvatarImage alt='profile picture' src={session?.user.image as string} />
                         <AvatarFallback>{session?.user.name}</AvatarFallback>
                     </Avatar>
