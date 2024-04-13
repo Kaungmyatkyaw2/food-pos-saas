@@ -50,7 +50,7 @@ const LoginForm = () => {
             }
 
         } catch (error) {
-            toast.error((error as Error).name)
+            toast.error((error as Error).message)
         } finally {
             setIsLoading(false)
         }

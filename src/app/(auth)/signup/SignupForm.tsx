@@ -52,7 +52,7 @@ const SignupForm = () => {
             await createAccount({ email: values.email, password: values.password, name: values.name })
             toast.success("Successfully created an account!")
         } catch (error) {
-            toast.error((error as Error).name)
+            toast.error((error as Error).message)
         } finally {
             setIsLoading(false)
         }

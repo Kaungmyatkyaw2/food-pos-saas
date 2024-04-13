@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { useSession } from 'next-auth/react'
 import { Badge } from '../ui/badge'
+import AccountDropDown from './AccountDropDown'
 
 export const Navbar = () => {
 
@@ -25,10 +26,7 @@ export const Navbar = () => {
                 <Button aria-label='profile-btn' className='p-0 rounded-full'>
                     {
                         session?.user ?
-                            <Avatar>
-                                <AvatarImage src={session.user.image || ""} />
-                                <AvatarFallback>{session.user.name?.substring(0, 2)}</AvatarFallback>
-                            </Avatar>
+                            <AccountDropDown />
                             :
                             <Button asChild><Link href={"/login"}>Login</Link></Button>
                     }
