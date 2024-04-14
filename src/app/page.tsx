@@ -1,4 +1,4 @@
-import { Navbar } from '@/components/layout'
+import { Footer, Header } from '@/components/layout'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import Image from 'next/image'
@@ -11,7 +11,7 @@ const Home = () => {
   return (
     <main>
 
-      <Navbar />
+      <Header />
 
       <section id='main-lading' className='container h-[calc(100vh-75px)] flex justify-center items-center'>
         <div className='md:w-[80%] w-full h-fit'>
@@ -24,6 +24,8 @@ const Home = () => {
           <Image className='mt-[20px] mx-auto block' src={"/sidepic.svg"} height={500} width={500} alt='graduation-pic' />
         </div>
       </section>
+
+      <Footer />
 
     </main>
   )
