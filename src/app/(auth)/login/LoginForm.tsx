@@ -46,7 +46,7 @@ const LoginForm = () => {
                 toast.error(res?.error)
             } else {
                 router.push("/")
-                toast.success("Successfully created an account!")
+                toast.success("Successfully logined!")
             }
 
         } catch (error) {

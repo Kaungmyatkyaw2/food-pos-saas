@@ -8,7 +8,7 @@ export const Footer = () => {
                 <h1 className='text-xl font-bold'>ShareRes.</h1>
             </Link>
             <p className='text-sm text-gray-500 flex-2 text-center'>&copy; {new Date().getFullYear()} Share res. All rights reserved.</p>
-            <p className='text-sm flex-1 text-end'>This app is createdy by <a className='underline' href="https://github.com/Kaungmyatkyaw2">Kaung Myat Kyaw</a></p>
+            <p className='text-sm flex-1 sm:text-end text-center'>This app is createdy by <a className='underline' href="https://github.com/Kaungmyatkyaw2">Kaung Myat Kyaw</a></p>
         </div>
     )
 }

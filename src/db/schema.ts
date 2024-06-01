@@ -6,6 +6,7 @@ import {
   integer,
   uuid,
   boolean,
+  pgEnum,
 } from "drizzle-orm/pg-core";
 import type { AdapterAccount } from "@auth/core/adapters";
 import { sql } from "drizzle-orm";
@@ -67,11 +68,18 @@ export const verificationTokens = pgTable(
   })
 );
 
+export const statusEnum = pgEnum("status", ["pending", "approved", "declined"]);
+
 export const resource = pgTable("resource", {
   id: uuid("id")
     .default(sql`gen_random_uuid()`)
     .notNull()
     .primaryKey(),
+  text: text("text").notNull(),
+  coverImage: text("coverImage"),
+  author: text("author").references(() => users.id, { onDelete: "cascade" }),
+  status: statusEnum("status").default("pending"),
+  createdAt: timestamp("createdAt").defaultNow(),
 });
 
 export type User = typeof users.$inferSelect;
