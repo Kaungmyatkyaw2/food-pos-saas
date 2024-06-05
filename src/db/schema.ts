@@ -70,7 +70,7 @@ export const verificationTokens = pgTable(
 
 export const statusEnum = pgEnum("status", ["pending", "approved", "declined"]);
 
-export const resource = pgTable("resource", {
+export const resources = pgTable("resource", {
   id: uuid("id")
     .default(sql`gen_random_uuid()`)
     .notNull()
@@ -85,3 +85,4 @@ export const resource = pgTable("resource", {
 });
 
 export type User = typeof users.$inferSelect;
+export type Resource = typeof resources.$inferSelect;

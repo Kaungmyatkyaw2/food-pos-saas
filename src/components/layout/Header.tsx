@@ -35,24 +35,21 @@ const AccountDropDown = () => {
 
 
     return (
-        <>
-            <DropdownMenu>
-                <DropdownMenuTrigger>
-                    <CustomAvatar img={session?.user.image} name={session?.user.name || ""} className='hover:ring' />
-
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                    <DropdownMenuItem onClick={handleSignOut} className='cursor-pointer'>
-                        <LogOut className='mr-3' size={18} />
-                        Logout
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={toDashboard} className='cursor-pointer'>
-                        <Settings className='mr-3' size={18} />
-                        Dashboard
-                    </DropdownMenuItem>
-                </DropdownMenuContent>
-            </DropdownMenu>
-        </>
+        <DropdownMenu>
+            <DropdownMenuTrigger>
+                <CustomAvatar img={session?.user.image} name={session?.user.name || ""} className='hover:ring' />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+                <DropdownMenuItem onClick={handleSignOut} className='cursor-pointer'>
+                    <LogOut className='mr-3' size={18} />
+                    Logout
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={toDashboard} className='cursor-pointer'>
+                    <Settings className='mr-3' size={18} />
+                    Dashboard
+                </DropdownMenuItem>
+            </DropdownMenuContent>
+        </DropdownMenu>
     )
 }
 

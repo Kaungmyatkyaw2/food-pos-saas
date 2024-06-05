@@ -17,7 +17,7 @@ export const CustomAvatar = ({ name, img, className }: { name: string, img?: str
         img ?
             <Avatar className={className}>
                 <AvatarImage alt='profile picture' src={img as string} />
-                <AvatarFallback>{name}</AvatarFallback>
+                <AvatarFallback>{name.substring(0,2)}</AvatarFallback>
             </Avatar>
             :
             <AvatarGenerator className={cn("w-10 h-10", className)} {...config} />
