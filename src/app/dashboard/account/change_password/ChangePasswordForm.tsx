@@ -71,9 +71,11 @@ const ChangePasswordForm = () => {
                     <CustomFormField control={formControl} placeholder="*********" name="confirmPassword" label="Confirm Password" />
 
                     <div className='flex space-x-6'>
-                        <Button onClick={() => {
-                            form.reset({ password: "", oldPassword: "", confirmPassword: "" })
-                        }} variant={"ghost"} aria-label='reset-button' type='button' disabled={isLoading}>
+                        <Button
+                            onClick={() => {
+                                form.reset({ password: "", oldPassword: "", confirmPassword: "" })
+                            }}
+                            variant={"ghost"} aria-label='reset-button' type='button' disabled={isLoading}>
                             Reset
                         </Button>
                         <Button aria-label='signup-btn' type='submit' disabled={isLoading}>

@@ -75,7 +75,9 @@ export const resource = pgTable("resource", {
     .default(sql`gen_random_uuid()`)
     .notNull()
     .primaryKey(),
-  text: text("text").notNull(),
+  tags: text("tags").notNull(),
+  description: text("description").notNull(),
+  title: text("title").notNull(),
   coverImage: text("coverImage"),
   author: text("author").references(() => users.id, { onDelete: "cascade" }),
   status: statusEnum("status").default("pending"),

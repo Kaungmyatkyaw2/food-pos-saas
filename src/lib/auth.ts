@@ -5,7 +5,6 @@ import { Adapter } from "next-auth/adapters";
 import GOOGLE_AUTH_PROVIDER from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
-import { users } from "@/db/schema";
 
 declare module "next-auth" {
   interface Session extends DefaultSession {
