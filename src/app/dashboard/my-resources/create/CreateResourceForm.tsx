@@ -1,13 +1,13 @@
 "use client"
 
 import { Form } from '@/components/ui/form'
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
-import { CustomFormField } from '@/components/form'
+import { CustomFileInput, CustomFormField } from '@/components/form'
 import { Button } from '@/components/ui/button'
-import { RotateCcw } from "lucide-react"
+import { Image, RotateCcw } from "lucide-react"
 import { toast } from 'sonner'
 import { FileUploader } from "react-drag-drop-files";
 import { Label } from '@/components/ui/label'
@@ -85,10 +85,7 @@ const CreateResourceForm = () => {
                     <p className='text-gray-600 text-sm pt-1'>Create new resource for everyone!</p>
                 </div>
                 <form autoComplete='off' onSubmit={form.handleSubmit(onSubmit)} className='space-y-5 '>
-                    <div className='space-y-2'>
-                        <Label>Cover Image</Label>
-                        <FileUploader handleChange={(file: File) => { setCoverImageFile(file) }} name="file" types={["JPG", 'JPEG']} />
-                    </div>
+                    <CustomFileInput label='Cover Image' file={coverImageFile} setFile={setCoverImageFile} />
 
                     <CustomFormField control={formControl} placeholder="Title" name="title" label="Title" />
                     <CustomFormField control={formControl} placeholder="Description" name="description" label="Description" isTextArea />

@@ -2,12 +2,14 @@
 
 
 import { SidebarNavigateButton } from "@/components/common";
-import { FilePenLine, LockOpen, UserRound } from "lucide-react";
+import { FilePenLine, LockOpen, Menu, UserRound } from "lucide-react";
+import DashboardCommonSidebar from "../DashboardCommonSidebar";
 
 const ProfileSidebar = () => {
+
+
     return (
-        <div className="space-y-5">
-            <h1 className="text-xl font-medium lg:ml-7">Account Settings</h1>
+        <DashboardCommonSidebar title="Account Setting">
             <div className="space-y-1">
                 <SidebarNavigateButton
                     title="My Profile"
@@ -32,7 +34,7 @@ const ProfileSidebar = () => {
                 />
 
             </div>
-        </div>)
+        </DashboardCommonSidebar>)
 }
 
 export default ProfileSidebar

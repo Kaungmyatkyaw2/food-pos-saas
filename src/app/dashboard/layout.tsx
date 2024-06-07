@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { Bookmark, UserCircle } from 'lucide-react'
+import { Book, UserCircle } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 
@@ -15,7 +15,7 @@ const SettingLayout = ({ children }: { children: React.ReactNode }) => {
                 </Button>
                 <Button  aria-label='to-resources-page'  asChild variant={"outline"}>
                     <Link href="/dashboard/my-resources">
-                        <Bookmark className='h-5 w-5 mr-2' />
+                        <Book className='h-5 w-5 mr-2' />
                         Resources
                     </Link>
                 </Button>

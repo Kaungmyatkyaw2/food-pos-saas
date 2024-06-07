@@ -1,18 +1,19 @@
 "use client"
 
 import { SidebarNavigateButton } from "@/components/common";
-import { Bookmark, Plus } from "lucide-react";
-import React from 'react'
+import { Book, Plus } from "lucide-react";
+import DashboardCommonSidebar from "../DashboardCommonSidebar";
 
 const MyResourcesSidebar = () => {
-    return (
-        <div className="space-y-5">
-            <h1 className="text-xl font-medium lg:ml-7">My Resources</h1>
-            <div className="space-y-1">
 
+
+
+    return (
+        <DashboardCommonSidebar title="My Resources">
+            <div className="space-y-1">
                 <SidebarNavigateButton
                     title="My Resources"
-                    icon={Bookmark}
+                    icon={Book}
                     description="Your all created resources"
                     endWith="/dashboard/my-resources"
                     href="/dashboard/my-resources"
@@ -25,7 +26,8 @@ const MyResourcesSidebar = () => {
                     href="/dashboard/my-resources/create"
                 />
             </div>
-        </div>)
+        </DashboardCommonSidebar>
+    )
 }
 
 export default MyResourcesSidebar
