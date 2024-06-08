@@ -12,6 +12,7 @@ import { toast } from 'sonner'
 import { FileUploader } from "react-drag-drop-files";
 import { Label } from '@/components/ui/label'
 import { createResource } from '@/actions/resource'
+import { useRouter } from 'next/navigation'
 
 const formSchema = z.object({
     tags: z.string().min(5).max(250),
@@ -34,6 +35,7 @@ const CreateResourceForm = () => {
 
     const [isLoading, setIsLoading] = useState(false)
     const [coverImageFile, setCoverImageFile] = useState<File | null>(null)
+    const router = useRouter()
     const form = useForm<FormValues>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -67,6 +69,7 @@ const CreateResourceForm = () => {
 
             toast.success("Successfully created an resource!")
             form.reset()
+            router.push("/dashboard/my-resources")
 
         } catch (error) {
             toast.error((error as Error)?.message || "Something went wrong")

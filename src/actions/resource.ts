@@ -4,6 +4,21 @@ import { db } from "@/db";
 import { Resource, resources } from "@/db/schema";
 import { getSession } from "@/lib/auth";
 import { uploadToCloudinary } from "@/lib/cloudinary";
+import { revalidatePath } from "next/cache";
+
+export const getMyResources = async () => {
+  const session = await getSession();
+
+  if (!session?.user) {
+    throw new Error("Unauthroized!");
+  }
+
+  const myResources = await db.query.resources.findMany({
+    where: (resource, { eq }) => eq(resource.author, session.user.id!),
+  });
+
+  return myResources;
+};
 
 export const createResource = async (
   data: Pick<Resource, "description" | "tags" | "title"> & {
@@ -32,6 +47,8 @@ export const createResource = async (
     .insert(resources)
     .values(payload)
     .returning();
+
+  revalidatePath("/dashboard/my-resources");
 
   return createdResource;
 };
