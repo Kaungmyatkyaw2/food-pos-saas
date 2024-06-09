@@ -12,7 +12,7 @@ import React from 'react'
 export const columns: ColumnDef<Resource>[] = [
     {
         accessorKey: "coverImage",
-        header: "Cover Image",
+        header: () => <div className="max-w-[180px]">Cover Image</div>,
         cell: ({ row }) => {
 
             return <Image className='rounded-lg border shadow-sm' src={row.getValue("coverImage")} alt='cover-image' width={100} height={100} />;

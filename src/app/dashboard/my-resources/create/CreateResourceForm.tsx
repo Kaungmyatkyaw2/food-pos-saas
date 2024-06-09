@@ -15,9 +15,17 @@ import { createResource } from '@/actions/resource'
 import { useRouter } from 'next/navigation'
 
 const formSchema = z.object({
-    tags: z.string().min(5).max(250),
-    title: z.string().min(5).max(250),
-    description: z.string().min(5).max(250),
+    tags: z.string().min(3),
+    title: z.string().min(5).max(100),
+    description: z.string().min(5),
+}).refine((val) => {
+    const pattern = /^#\w+(?:,#\w+)*$/;
+    return pattern.test(val.tags);
+
+}, {
+    message: "Invalid Tag Format!",
+    path: ["tags"],
+
 })
 
 type FormValues = z.infer<typeof formSchema>
@@ -69,6 +77,7 @@ const CreateResourceForm = () => {
 
             toast.success("Successfully created an resource!")
             form.reset()
+            setCoverImageFile(null)
             router.push("/dashboard/my-resources")
 
         } catch (error) {
@@ -88,11 +97,11 @@ const CreateResourceForm = () => {
                     <p className='text-gray-600 text-sm pt-1'>Create new resource for everyone!</p>
                 </div>
                 <form autoComplete='off' onSubmit={form.handleSubmit(onSubmit)} className='space-y-5 '>
-                    <CustomFileInput label='Cover Image' file={coverImageFile} setFile={setCoverImageFile} />
+                    <CustomFileInput label='Cover Image' file={coverImageFile} setFile={setCoverImageFile} accept='image/*' />
 
                     <CustomFormField control={formControl} placeholder="Title" name="title" label="Title" />
                     <CustomFormField control={formControl} placeholder="Description" name="description" label="Description" isTextArea />
-                    <CustomFormField control={formControl} placeholder="Tags" name="tags" label="Tags" isTextArea />
+                    <CustomFormField control={formControl} placeholder="Eg: #js,#notion" name="tags" label="Tags" isTextArea />
 
                     <div className='w-full pt-5'>
                         <Button aria-label='shaee-resource-btn' type='submit' className='w-full py-6' disabled={isLoading}>
