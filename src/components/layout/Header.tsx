@@ -14,6 +14,7 @@ import {
 import { LogOut, Settings } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { CustomAvatar } from '../common'
+import Image from 'next/image'
 
 
 const AccountDropDown = () => {
@@ -62,7 +63,9 @@ export const Header = () => {
     return (
         <nav className='container sticky top-0 left-0 w-full h-[75px] flex items-center justify-between bg-white/30 backdrop-blur-sm border-b shadow-sm z-10'>
             <div className='flex flex-wrap items-center space-x-2 max-w-full'>
-                <Link href={"/"} className='font-bold sm:text-2xl text-xl'>ShareRes</Link>
+                <Link href={"/"}>
+                    <Image alt='icon' src={'/icon.png'} width={50} height={50} className='rounded-lg' />
+                </Link>
 
                 <Badge className="sm:flex hidden" variant={"outline"}>Share now</Badge>
             </div>
