@@ -1,18 +1,19 @@
 "use client"
-import { CustomTable } from '@/components/table';
+import { CustomTable, CustomTablePagination } from '@/components/table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Resource } from '@/db/schema'
-import { ColumnDef, getCoreRowModel, useReactTable } from '@tanstack/react-table'
+import useQueryParams from '@/hooks/useQueryParams';
+import { ColumnDef, getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table'
 import { Edit, Trash } from 'lucide-react';
 import Image from 'next/image';
-import React from 'react'
+import React, { useState } from 'react'
 
 
 export const columns: ColumnDef<Resource>[] = [
     {
         accessorKey: "coverImage",
-        header: () => <div className="max-w-[180px]">Cover Image</div>,
+        header: () => <div className="min-w-[100px]">Cover Image</div>,
         cell: ({ row }) => {
 
             return <Image className='rounded-lg border shadow-sm' src={row.getValue("coverImage")} alt='cover-image' width={100} height={100} />;
@@ -88,15 +89,34 @@ export const columns: ColumnDef<Resource>[] = [
     },
 ];
 
-const MyResourcesList = ({ data }: { data: Resource[] }) => {
+const MyResourcesList = ({ data, pageCount }: { data: Resource[], pageCount: number }) => {
+
+    const { urlSearchParams } = useQueryParams();
+    const queryPage = urlSearchParams.get("page")
+    const isPageOne = !urlSearchParams.get("page") || queryPage == "1"
+    const [pagination, setPagination] = useState({ pageIndex: isPageOne ? 0 : +(queryPage || 1) - 1, pageSize: 10 })
+
+
     const table = useReactTable({
         columns,
         data,
         getCoreRowModel: getCoreRowModel(),
+        getPaginationRowModel: getPaginationRowModel(),
+        onPaginationChange: setPagination,
+        manualPagination: true,
+        state: {
+            pagination
+        },
+        pageCount
+
     })
 
+
     return (
-        <CustomTable<Resource> table={table} />
+        <div className='space-y-6'>
+            <CustomTable<Resource> table={table} />
+            <CustomTablePagination<Resource> table={table} />
+        </div>
     )
 }
 

@@ -4,20 +4,39 @@ import { db } from "@/db";
 import { Resource, resources } from "@/db/schema";
 import { getSession } from "@/lib/auth";
 import { uploadToCloudinary } from "@/lib/cloudinary";
+import { count, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
-export const getMyResources = async () => {
+export const getMyResources = async (page: number) => {
   const session = await getSession();
 
   if (!session?.user) {
     throw new Error("Unauthroized!");
   }
 
-  const myResources = await db.query.resources.findMany({
-    where: (resource, { eq }) => eq(resource.author, session.user.id!),
-  });
+  const myResources = await db
+    .select()
+    .from(resources)
+    .where(eq(resources.author, session.user.id!))
+    .offset((page - 1) * 10)
+    .limit(10);
 
   return myResources;
+};
+
+export const getMyResourcesCount = async () => {
+  const session = await getSession();
+
+  if (!session?.user) {
+    throw new Error("Unauthroized!");
+  }
+
+  const myResources = await db
+    .select({ count: count() })
+    .from(resources)
+    .where(eq(resources.author, session.user.id));
+
+  return Math.ceil(myResources[0]?.count / 10);
 };
 
 export const createResource = async (

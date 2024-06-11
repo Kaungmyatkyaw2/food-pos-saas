@@ -4,6 +4,7 @@ import "./globals.css";
 import ProviderWrapper from "@/components/ProviderWrapper";
 import { Toaster } from 'sonner'
 import { Footer, Header } from "@/components/layout";
+import NextTopLoader from 'nextjs-toploader';
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -26,6 +27,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <ProviderWrapper>
           <Toaster richColors />
+          <NextTopLoader />
           <Header />
           <div className="container">
             {children}

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Table } from '../ui/table'
-import { ColumnDef, Table as TableType } from '@tanstack/react-table'
+import { Table as TableType } from '@tanstack/react-table'
 import { CustomTableHeader } from './CustomTableHeader'
 import { CustomTableBody } from './CustomTableBody'
 
