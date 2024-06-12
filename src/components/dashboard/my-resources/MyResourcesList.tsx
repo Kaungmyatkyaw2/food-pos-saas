@@ -7,6 +7,7 @@ import useQueryParams from '@/hooks/useQueryParams';
 import { ColumnDef, getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table'
 import { Edit, Trash } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import React, { useState } from 'react'
 
 
@@ -77,8 +78,10 @@ export const columns: ColumnDef<Resource>[] = [
 
             return (
                 <div className="flex justify-end gap-x-2">
-                    <Button className='rounded-full border bg-neutral-200' size={"icon"} variant={"secondary"}>
-                        <Edit className='w-3 h-3' />
+                    <Button className='rounded-full border bg-neutral-200' size={"icon"} variant={"secondary"} asChild>
+                        <Link href={`/dashboard/my-resources/edit/${row.original.id}`}>
+                            <Edit className='w-3 h-3' />
+                        </Link>
                     </Button>
                     <Button className='rounded-full border bg-neutral-200' size={"icon"} variant={"secondary"}>
                         <Trash className='w-3 h-3' />

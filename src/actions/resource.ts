@@ -1,10 +1,10 @@
 "use server";
 
 import { db } from "@/db";
-import { Resource, resources } from "@/db/schema";
+import { Resource, resources, users } from "@/db/schema";
 import { getSession } from "@/lib/auth";
 import { uploadToCloudinary } from "@/lib/cloudinary";
-import { count, eq } from "drizzle-orm";
+import { and, count, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
 export const getMyResources = async (page: number) => {
@@ -19,7 +19,8 @@ export const getMyResources = async (page: number) => {
     .from(resources)
     .where(eq(resources.author, session.user.id!))
     .offset((page - 1) * 10)
-    .limit(10);
+    .limit(10)
+    .orderBy(resources.createdAt);
 
   return myResources;
 };
@@ -37,6 +38,13 @@ export const getMyResourcesCount = async () => {
     .where(eq(resources.author, session.user.id));
 
   return Math.ceil(myResources[0]?.count / 10);
+};
+
+export const getResourceById = async (id: string) => {
+  const foundResource = await db.query.resources.findFirst({
+    where: (resource, { eq }) => eq(resource.id, id),
+  });
+  return foundResource;
 };
 
 export const createResource = async (
@@ -70,4 +78,45 @@ export const createResource = async (
   revalidatePath("/dashboard/my-resources");
 
   return createdResource;
+};
+
+export const editResource = async (
+  id: string,
+  data: Pick<Resource, "description" | "tags" | "title"> & {
+    coverImageBuffer?: Uint8Array;
+  }
+) => {
+  const session = await getSession();
+
+  if (!session?.user) {
+    throw new Error("Unauthroized!");
+  }
+
+  const payload: Pick<Resource, "title" | "description" | "tags"> & {
+    coverImage?: string;
+  } = {
+    title: data.title,
+    description: data.description,
+    tags: data.tags,
+  };
+
+  if (data.coverImageBuffer) {
+    const uploadedImg = await uploadToCloudinary(
+      new Uint8Array(data.coverImageBuffer)
+    );
+
+    if (uploadedImg?.secure_url) {
+      payload.coverImage = uploadedImg.secure_url;
+    }
+  }
+
+  const updatedResource = await db
+    .update(resources)
+    .set(payload)
+    .where(and(eq(resources.id, id), eq(resources.author, session.user.id)))
+    .returning();
+
+  revalidatePath("/dashboard/my-resources");
+
+  return updatedResource;
 };

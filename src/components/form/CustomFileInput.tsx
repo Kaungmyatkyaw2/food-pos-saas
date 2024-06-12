@@ -6,12 +6,13 @@ interface Props {
     label?: string,
     file: File | null,
     setFile: React.Dispatch<React.SetStateAction<File | null>>,
-    accept?: string
+    accept?: string,
+    defaultPreview?: string
 }
 
-export const CustomFileInput = ({ label, file, setFile, accept }: Props) => {
+export const CustomFileInput = ({ label, file, setFile, accept, defaultPreview }: Props) => {
     const fileInputRef = useRef<HTMLInputElement | null>(null)
-    const previewUrl = file ? URL.createObjectURL(file) : undefined;
+    const previewUrl = file ? URL.createObjectURL(file) : defaultPreview;
 
 
     return (
