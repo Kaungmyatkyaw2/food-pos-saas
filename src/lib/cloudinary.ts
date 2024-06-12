@@ -26,3 +26,19 @@ export const uploadToCloudinary = async (
       )
       .end(new Uint8Array(buffer));
   });
+
+export const deleteFromCloudinary = (publicId: string) => {
+  return new Promise((resolve, reject) => {
+    cloudinary.uploader.destroy(
+      publicId.trim(),
+      { resource_type: "image" },
+      (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      }
+    );
+  });
+};

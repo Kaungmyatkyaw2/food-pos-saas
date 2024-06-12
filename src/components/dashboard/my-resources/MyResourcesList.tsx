@@ -9,6 +9,7 @@ import { Edit, Trash } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react'
+import ResourceDeleteButton from './ResourceDeleteButton';
 
 
 export const columns: ColumnDef<Resource>[] = [
@@ -83,9 +84,7 @@ export const columns: ColumnDef<Resource>[] = [
                             <Edit className='w-3 h-3' />
                         </Link>
                     </Button>
-                    <Button className='rounded-full border bg-neutral-200' size={"icon"} variant={"secondary"}>
-                        <Trash className='w-3 h-3' />
-                    </Button>
+                    <ResourceDeleteButton resource={row.original} />
                 </div>
             );
         },

@@ -14,7 +14,7 @@ const MyResourcesSidebar = () => {
                 <SidebarNavigateButton
                     title="My Resources"
                     icon={Book}
-                    description="Your all created resources"
+                    description="Your resources"
                     endWith="/dashboard/my-resources"
                     href="/dashboard/my-resources"
                 />
