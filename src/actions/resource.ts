@@ -67,9 +67,7 @@ export const createResource = async (
   try {
     const user = await authGuard();
 
-    const uploadedImg = await uploadToCloudinary(
-      new Uint8Array(data.coverImageBuffer)
-    );
+    const uploadedImg = await uploadToCloudinary(data.coverImageBuffer);
 
     const payload = {
       title: data.title,
@@ -86,7 +84,7 @@ export const createResource = async (
 
     revalidatePath("/dashboard/my-resources");
 
-    return createdResource;
+    return createdResource[0];
   } catch (error) {
     throw error;
   }
@@ -110,9 +108,7 @@ export const editResource = async (
     };
 
     if (data.coverImageBuffer) {
-      const uploadedImg = await uploadToCloudinary(
-        new Uint8Array(data.coverImageBuffer)
-      );
+      const uploadedImg = await uploadToCloudinary(data.coverImageBuffer);
 
       if (uploadedImg?.secure_url) {
         payload.coverImage = uploadedImg.secure_url;

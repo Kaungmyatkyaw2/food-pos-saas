@@ -9,8 +9,8 @@ cloudinary.config({
 
 export const uploadToCloudinary = async (
   buffer: Uint8Array
-): Promise<UploadApiResponse | undefined> =>
-  await new Promise((resolve, reject) => {
+): Promise<UploadApiResponse | undefined> => {
+  return await new Promise((resolve, reject) => {
     cloudinary.uploader
       .upload_stream(
         {
@@ -24,8 +24,9 @@ export const uploadToCloudinary = async (
           resolve(result);
         }
       )
-      .end(new Uint8Array(buffer));
+      .end(Buffer.from(buffer));
   });
+};
 
 export const deleteFromCloudinary = (publicId: string) => {
   return new Promise((resolve, reject) => {

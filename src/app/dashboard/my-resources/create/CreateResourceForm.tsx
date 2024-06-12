@@ -1,16 +1,14 @@
 "use client"
 
 import { Form } from '@/components/ui/form'
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { CustomFileInput, CustomFormField } from '@/components/form'
 import { Button } from '@/components/ui/button'
-import { Image, RotateCcw } from "lucide-react"
+import { RotateCcw } from "lucide-react"
 import { toast } from 'sonner'
-import { FileUploader } from "react-drag-drop-files";
-import { Label } from '@/components/ui/label'
 import { createResource } from '@/actions/resource'
 import { useRouter } from 'next/navigation'
 
@@ -33,7 +31,7 @@ type FormValues = z.infer<typeof formSchema>
 
 export const convertFileToBuffer = async (inputFile: File) => {
     const arrayBuffer = await inputFile?.arrayBuffer();
-    const buffer = new Uint8Array(arrayBuffer);
+    const buffer = Buffer.from(arrayBuffer);
 
     return buffer;
 };
@@ -61,6 +59,13 @@ const CreateResourceForm = () => {
             return;
         }
 
+        const maxSize = 0.5 * 1024 * 1024;
+
+        if (coverImageFile.size > maxSize) {
+            toast.error("File size exceeds 0.5MB");
+            return;
+        }
+
         setIsLoading(true)
 
 
@@ -68,18 +73,18 @@ const CreateResourceForm = () => {
 
             const coverImageBuffer = await convertFileToBuffer(coverImageFile)
 
-            await createResource({
+            const r = await createResource({
                 description: values?.description,
                 title: values?.title,
                 tags: values?.tags,
                 coverImageBuffer
             })
 
+
             toast.success("Successfully created an resource!")
             form.reset()
             setCoverImageFile(null)
             router.push("/dashboard/my-resources")
-
         } catch (error) {
             toast.error((error as Error)?.message || "Something went wrong")
         } finally {
