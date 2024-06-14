@@ -4,7 +4,7 @@ import { db } from "@/db";
 import { Resource, resources, users } from "@/db/schema";
 import { getSession } from "@/lib/auth";
 import { deleteFromCloudinary, uploadToCloudinary } from "@/lib/cloudinary";
-import { and, asc, count, eq } from "drizzle-orm";
+import { and, count, desc, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
 const authGuard = async (roleGuard?: boolean) => {
@@ -24,13 +24,12 @@ const authGuard = async (roleGuard?: boolean) => {
 export const getMyResources = async (page: number) => {
   try {
     const user = await authGuard();
-    const myResources = await db
-      .select()
-      .from(resources)
-      .where(eq(resources.authorId, user.id!))
-      .offset((page - 1) * 10)
-      .limit(10)
-      .orderBy(resources.createdAt);
+    const myResources = await db.query.resources.findMany({
+      where: eq(resources.authorId, user.id!),
+      offset: (page - 1) * 10,
+      limit: 10,
+      orderBy: [desc(resources.createdAt)],
+    });
 
     return myResources;
   } catch (error) {
@@ -44,7 +43,7 @@ export const getAllResources = async (page: number) => {
     const allResources = await db.query.resources.findMany({
       offset: (page - 1) * 10,
       limit: 10,
-      orderBy: [asc(resources.createdAt)],
+      orderBy: [desc(resources.createdAt)],
       with: { author: true },
     });
 
@@ -105,7 +104,7 @@ export const createResource = async (
       description: data.description,
       tags: data.tags,
       coverImage: uploadedImg?.secure_url || "",
-      author: user.id,
+      authorId: user.id,
     };
 
     const createdResource = await db

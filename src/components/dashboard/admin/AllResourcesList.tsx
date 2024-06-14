@@ -48,7 +48,7 @@ export const columns: ColumnDef<Resource>[] = [
             const author: User = row.getValue("author")
 
             return (
-                <h1 className='text-center'>{author.name}</h1>
+                <h1 className='text-center'>{author?.name}</h1>
             );
         },
     },
