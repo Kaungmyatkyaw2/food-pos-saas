@@ -10,6 +10,7 @@ declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
       id: string;
+      isAdmin?: boolean;
     } & DefaultSession["user"];
   }
 }
@@ -82,6 +83,7 @@ export const authOptions: AuthOptions = {
         name: dbUser.name,
         email: dbUser.email,
         picture: dbUser.image,
+        isAdmin: dbUser.isAdmin,
       };
     },
     async session({ session, token }) {
@@ -91,6 +93,7 @@ export const authOptions: AuthOptions = {
           name: token.name,
           email: token.email,
           image: token.picture,
+          isAdmin: !!token.isAdmin,
         };
       }
 

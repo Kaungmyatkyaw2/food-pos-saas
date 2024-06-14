@@ -9,7 +9,7 @@ import {
   pgEnum,
 } from "drizzle-orm/pg-core";
 import type { AdapterAccount } from "@auth/core/adapters";
-import { sql } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 
 export const users = pgTable("user", {
   id: text("id")
@@ -79,10 +79,20 @@ export const resources = pgTable("resource", {
   description: text("description").notNull(),
   title: text("title").notNull(),
   coverImage: text("coverImage"),
-  author: text("author").references(() => users.id, { onDelete: "cascade" }),
+  authorId: text("author_id"),
   status: statusEnum("status").default("pending"),
   createdAt: timestamp("createdAt").defaultNow(),
 });
+
+export const usersRelation = relations(users, ({ many }) => ({
+  resources: many(resources),
+}));
+export const resourceRelation = relations(resources, ({ one }) => ({
+  author: one(users, {
+    fields: [resources.authorId],
+    references: [users.id],
+  }),
+}));
 
 export type User = typeof users.$inferSelect;
 export type Resource = typeof resources.$inferSelect;

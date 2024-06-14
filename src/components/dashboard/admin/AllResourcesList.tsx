@@ -1,15 +1,13 @@
 "use client"
+import { updateResourceStatus } from '@/actions/resource';
 import { CustomTable, CustomTablePagination } from '@/components/table';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Resource } from '@/db/schema'
+import { Select, SelectItem, SelectContent, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Resource, User } from '@/db/schema'
 import useQueryParams from '@/hooks/useQueryParams';
 import { ColumnDef, getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table'
-import { Edit, Trash } from 'lucide-react';
 import Image from 'next/image';
-import Link from 'next/link';
 import React, { useState } from 'react'
-import ResourceDeleteButton from './ResourceDeleteButton';
 
 
 export const columns: ColumnDef<Resource>[] = [
@@ -23,9 +21,9 @@ export const columns: ColumnDef<Resource>[] = [
     },
     {
         accessorKey: "title",
-        header: () => <div className="max-w-[180px]">Content</div>,
+        header: () => <div className="max-w-[200]">Content</div>,
         cell: ({ row }) => {
-            return <div className="space-y-2 w-[180px] truncate overflow-x-hidden">
+            return <div className="space-y-2 w-[200] truncate overflow-x-hidden">
                 <h1 className="truncate font-bold">{row.getValue("title")}</h1>
                 <p className="text-xs text-neutral-500 overflow-ellipsis overflow-hidden">{row.original.description}</p>
             </div>;
@@ -43,41 +41,49 @@ export const columns: ColumnDef<Resource>[] = [
         },
     },
     {
+        accessorKey: "author",
+        header: () => <div className="text-center min-w-max">Author</div>,
+        cell: ({ row }) => {
+
+            const author: User = row.getValue("author")
+
+            return (
+                <h1 className='text-center'>{author.name}</h1>
+            );
+        },
+    },
+    {
         accessorKey: "status",
         header: () => <div className="min-w-max">Status</div>,
         cell: ({ row }) => {
             const status: string = row.getValue("status");
 
-
-            let style = {
-                text: "text-yellow-600",
-                basedPing: "bg-yellow-400",
-                ping: "bg-yellow-500"
-
-            }
+            let style = "border border-yellow-500 text-yellow-600 uppercase"
 
             if (status == "approved") {
-                style.text = " text-green-600"
-                style.basedPing = "bg-green-400"
-                style.ping = "bg-green-500"
-
+                style = "border border-green-500 text-green-600 uppercase"
             } else if (status == "declined") {
-                style.text = "text-red-600"
-                style.basedPing = "bg-red-400"
-                style.ping = "bg-red-500"
+                "border border-red-500 text-red-600 uppercase"
+            }
 
+            const handleChangeStatus = (e: "approved" | "declined" | "pending") => {
+                updateResourceStatus(row.original.id, e)
             }
 
 
             return (
                 <div className="font-medium min-w-max">
-                    <div className={`flex items-center gap-2`}>
-                        <span className="relative flex h-3 w-3">
-                            <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${style.ping}`}></span>
-                            <span className={`relative inline-flex rounded-full h-3 w-3 ${style.basedPing}`}></span>
-                        </span>
-                        <p className={`${style.text} font-medium uppercase`}>{status}</p>
-                    </div>
+                    <Select value={status} onValueChange={handleChangeStatus}>
+                        <SelectTrigger className="w-[180px]">
+                            <SelectValue placeholder="Status" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="pending">Pending</SelectItem>
+                            <SelectItem value="approved">Approved</SelectItem>
+                            <SelectItem value="declined">Decliend</SelectItem>
+                        </SelectContent>
+                    </Select>
+
                 </div>
             );
         },
@@ -94,26 +100,10 @@ export const columns: ColumnDef<Resource>[] = [
             );
         },
     },
-    {
-        accessorKey: "actions",
-        header: () => <div className="text-right min-w-max">Actions</div>,
-        cell: ({ row }) => {
 
-            return (
-                <div className="flex justify-end gap-x-2">
-                    <Button className='rounded-full border bg-neutral-200' size={"icon"} variant={"secondary"} asChild>
-                        <Link href={`/dashboard/my-resources/edit/${row.original.id}`}>
-                            <Edit className='w-3 h-3' />
-                        </Link>
-                    </Button>
-                    <ResourceDeleteButton resource={row.original} />
-                </div>
-            );
-        },
-    },
 ];
 
-const MyResourcesList = ({ data, pageCount }: { data: Resource[], pageCount: number }) => {
+const AllresourcesList = ({ data, pageCount }: { data: Resource[], pageCount: number }) => {
 
     const { urlSearchParams } = useQueryParams();
     const queryPage = urlSearchParams.get("page")
@@ -144,4 +134,4 @@ const MyResourcesList = ({ data, pageCount }: { data: Resource[], pageCount: num
     )
 }
 
-export { MyResourcesList }
+export { AllresourcesList }

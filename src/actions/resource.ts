@@ -4,13 +4,17 @@ import { db } from "@/db";
 import { Resource, resources, users } from "@/db/schema";
 import { getSession } from "@/lib/auth";
 import { deleteFromCloudinary, uploadToCloudinary } from "@/lib/cloudinary";
-import { and, count, eq } from "drizzle-orm";
+import { and, asc, count, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
-const authGuard = async () => {
+const authGuard = async (roleGuard?: boolean) => {
   const session = await getSession();
 
   if (!session?.user) {
+    throw new Error("Unauthroized!");
+  }
+
+  if (roleGuard && !session.user.isAdmin) {
     throw new Error("Unauthroized!");
   }
 
@@ -23,12 +27,39 @@ export const getMyResources = async (page: number) => {
     const myResources = await db
       .select()
       .from(resources)
-      .where(eq(resources.author, user.id!))
+      .where(eq(resources.authorId, user.id!))
       .offset((page - 1) * 10)
       .limit(10)
       .orderBy(resources.createdAt);
 
     return myResources;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getAllResources = async (page: number) => {
+  try {
+    await authGuard(true);
+    const allResources = await db.query.resources.findMany({
+      offset: (page - 1) * 10,
+      limit: 10,
+      orderBy: [asc(resources.createdAt)],
+      with: { author: true },
+    });
+
+    return allResources;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getAllResourcesCount = async () => {
+  try {
+    await authGuard(true);
+    const myResources = await db.select({ count: count() }).from(resources);
+
+    return Math.ceil(myResources[0]?.count / 10);
   } catch (error) {
     throw error;
   }
@@ -40,7 +71,7 @@ export const getMyResourcesCount = async () => {
     const myResources = await db
       .select({ count: count() })
       .from(resources)
-      .where(eq(resources.author, user.id));
+      .where(eq(resources.authorId, user.id));
 
     return Math.ceil(myResources[0]?.count / 10);
   } catch (error) {
@@ -118,10 +149,32 @@ export const editResource = async (
     const updatedResource = await db
       .update(resources)
       .set(payload)
-      .where(and(eq(resources.id, id), eq(resources.author, user.id)))
+      .where(and(eq(resources.id, id), eq(resources.authorId, user.id)))
       .returning();
 
     revalidatePath("/dashboard/my-resources");
+
+    return updatedResource;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateResourceStatus = async (
+  id: string,
+  status: "pending" | "approved" | "declined"
+) => {
+  try {
+    await authGuard(true);
+
+    const updatedResource = await db
+      .update(resources)
+      .set({ status: status! })
+      .where(eq(resources.id, id))
+      .returning();
+
+    revalidatePath("/dashboard/my-resources");
+    revalidatePath("/dashboard/admin");
 
     return updatedResource;
   } catch (error) {
@@ -145,7 +198,7 @@ export const deleteResource = async (id: string) => {
 
     const foundResource = await db
       .delete(resources)
-      .where(and(eq(resources.id, id), eq(resources.author, user.id)));
+      .where(and(eq(resources.id, id), eq(resources.authorId, user.id)));
 
     revalidatePath("/dashboard/my-resources");
     return foundResource;

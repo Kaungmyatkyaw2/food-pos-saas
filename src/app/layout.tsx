@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Montserrat } from "next/font/google";
 import "./globals.css";
 import ProviderWrapper from "@/components/ProviderWrapper";
 import { Toaster } from 'sonner'
@@ -7,7 +7,7 @@ import { Footer, Header } from "@/components/layout";
 import NextTopLoader from 'nextjs-toploader';
 
 
-const inter = Inter({ subsets: ["latin"] });
+const monst = Montserrat({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Share Res | Share resources for learning",
@@ -24,7 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={monst.className}>
         <ProviderWrapper>
           <Toaster richColors />
           <NextTopLoader />
