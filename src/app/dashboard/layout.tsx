@@ -11,7 +11,6 @@ const SettingLayout = async ({ children }: { children: React.ReactNode }) => {
 
 
     if (!session?.user) {
-        console.log("first")
         return redirect("/login")
     }
 
