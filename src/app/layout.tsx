@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Roboto } from "next/font/google";
+import { Ubuntu } from "next/font/google";
 import "./globals.css";
 import ProviderWrapper from "@/components/ProviderWrapper";
 import { Toaster } from 'sonner'
@@ -8,8 +8,8 @@ import NextTopLoader from 'nextjs-toploader';
 
 
 
-const roboto = Roboto({
-  weight: ['100','300','400','500','700','900'],
+const ubuntu = Ubuntu({
+  weight: ['300', '400', '500', '700'],
   subsets: ['latin'],
 })
 export const metadata: Metadata = {
@@ -27,7 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={roboto.className}>
+      <body className={ubuntu.className}>
         <ProviderWrapper>
           <Toaster richColors />
           <NextTopLoader />
