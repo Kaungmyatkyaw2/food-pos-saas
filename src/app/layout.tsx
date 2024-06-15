@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Ubuntu } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "./globals.css";
 import ProviderWrapper from "@/components/ProviderWrapper";
 import { Toaster } from 'sonner'
@@ -8,8 +8,8 @@ import NextTopLoader from 'nextjs-toploader';
 
 
 
-const ubuntu = Ubuntu({
-  weight: ['300', '400', '500', '700'],
+const poppins = Poppins({
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
   subsets: ['latin'],
 })
 export const metadata: Metadata = {
@@ -27,7 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={ubuntu.className}>
+      <body className={poppins.className}>
         <ProviderWrapper>
           <Toaster richColors />
           <NextTopLoader />
