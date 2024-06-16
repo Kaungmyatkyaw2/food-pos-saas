@@ -21,9 +21,9 @@ export const columns: ColumnDef<Resource>[] = [
     },
     {
         accessorKey: "title",
-        header: () => <div className="max-w-[200]">Content</div>,
+        header: () => <div className="w-[200px]">Content</div>,
         cell: ({ row }) => {
-            return <div className="space-y-2 w-[200] truncate overflow-x-hidden">
+            return <div className="space-y-2 w-[200px] truncate overflow-x-hidden">
                 <h1 className="truncate font-bold">{row.getValue("title")}</h1>
                 <p className="text-xs text-neutral-500 overflow-ellipsis overflow-hidden">{row.original.description}</p>
             </div>;
