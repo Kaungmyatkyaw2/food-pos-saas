@@ -26,7 +26,7 @@ const ResourcesPage = async ({ searchParams: { page } }: { searchParams: { page:
                                     <h1 className='text-xs text-neutral-600 w-full text-ellipsis'>{re.description}</h1>
                                 </div>
                                 <div className='flex gap-2'>
-                                    {re.tags.split(",").map(tag => <Badge className='w-fit h-fit' variant={"secondary"}>{tag}</Badge>)}
+                                    {re.tags.split(",").map((tag, index) => <Badge key={index} className='w-fit h-fit' variant={"secondary"}>{tag}</Badge>)}
                                 </div>
                             </div>
                             <div className='w-[200px] h-[120px]'>
