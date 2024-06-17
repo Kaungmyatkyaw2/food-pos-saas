@@ -32,7 +32,7 @@ export default function RootLayout({
           <Toaster richColors />
           <NextTopLoader />
           <Header />
-            {children}
+          {children}
           <Footer />
         </ProviderWrapper>
       </body>
