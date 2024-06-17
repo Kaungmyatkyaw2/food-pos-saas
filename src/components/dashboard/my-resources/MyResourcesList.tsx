@@ -10,6 +10,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react'
 import ResourceDeleteButton from './ResourceDeleteButton';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 
 export const columns: ColumnDef<Resource>[] = [
@@ -115,7 +116,7 @@ export const columns: ColumnDef<Resource>[] = [
 
 const MyResourcesList = ({ data, pageCount }: { data: Resource[], pageCount: number }) => {
 
-    const { urlSearchParams } = useQueryParams();
+    const { urlSearchParams, setQueryParams } = useQueryParams();
     const queryPage = urlSearchParams.get("page")
     const isPageOne = !urlSearchParams.get("page") || queryPage == "1"
     const [pagination, setPagination] = useState({ pageIndex: isPageOne ? 0 : +(queryPage || 1) - 1, pageSize: 10 })
@@ -138,6 +139,20 @@ const MyResourcesList = ({ data, pageCount }: { data: Resource[], pageCount: num
 
     return (
         <div className='space-y-6'>
+            <div className="font-medium min-w-max">
+                <Select value={urlSearchParams.get("status") || "all"} onValueChange={(e) => { setQueryParams({ status: e }) }}>
+                    <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="all">All</SelectItem>
+                        <SelectItem value="pending">Pending</SelectItem>
+                        <SelectItem value="approved">Approved</SelectItem>
+                        <SelectItem value="declined">Decliend</SelectItem>
+                    </SelectContent>
+                </Select>
+
+            </div>
             <CustomTable<Resource> table={table} />
             <CustomTablePagination<Resource> table={table} />
         </div>

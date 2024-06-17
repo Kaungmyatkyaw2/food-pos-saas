@@ -21,11 +21,23 @@ const authGuard = async (roleGuard?: boolean) => {
   return session.user;
 };
 
-export const getMyResources = async (page: number) => {
+export const getMyResources = async ({
+  page,
+  status,
+}: {
+  page: number;
+  status: "all" | "pending" | "approved" | "declined";
+}) => {
   try {
     const user = await authGuard();
+
+    const filterate =
+      status == "all"
+        ? eq(resources.authorId, user.id!)
+        : and(eq(resources.authorId, user.id!), eq(resources.status, status));
+
     const myResources = await db.query.resources.findMany({
-      where: eq(resources.authorId, user.id!),
+      where: filterate,
       offset: (page - 1) * 10,
       limit: 10,
       orderBy: [desc(resources.createdAt)],
