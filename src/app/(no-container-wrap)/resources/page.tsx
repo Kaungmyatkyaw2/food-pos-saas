@@ -6,7 +6,6 @@ import React from 'react'
 const ResourcesPage = async ({ searchParams: { page } }: { searchParams: { page: number } }) => {
     const resources = await getResourcesForReader(page) || []
 
-    console.log(resources)
     return (
         <div className='py-10'>
             {
@@ -22,7 +21,7 @@ const ResourcesPage = async ({ searchParams: { page } }: { searchParams: { page:
 
                         <div className="flex space-x-2">
                             <div className='w-full max-h-[128px] flex flex-col justify-between overflow-hidden space-y-5'>
-                                <div className='min-h-[60%] overflow-hidden'>
+                                <div className='max-h-[60%] overflow-hidden line-clamp-5'>
                                     <h1 className='font-bold w-full text-ellipsis overflow-x-hidden'>{re.title}</h1>
                                     <h1 className='text-xs text-neutral-600 w-full text-ellipsis'>{re.description}</h1>
                                 </div>

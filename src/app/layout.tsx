@@ -32,9 +32,7 @@ export default function RootLayout({
           <Toaster richColors />
           <NextTopLoader />
           <Header />
-          <div className="sm:container">
             {children}
-          </div>
           <Footer />
         </ProviderWrapper>
       </body>
