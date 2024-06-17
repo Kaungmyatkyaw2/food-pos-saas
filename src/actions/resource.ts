@@ -53,6 +53,23 @@ export const getAllResources = async (page: number) => {
   }
 };
 
+export const getResourcesForReader = async (page: number) => {
+  try {
+    await authGuard();
+    const allResources = await db.query.resources.findMany({
+      where: eq(resources.status, "approved"),
+      offset: (page - 1) * 10,
+      limit: 10,
+      orderBy: [desc(resources.createdAt)],
+      with: { author: true },
+    });
+
+    return allResources;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const getAllResourcesCount = async () => {
   try {
     await authGuard(true);
