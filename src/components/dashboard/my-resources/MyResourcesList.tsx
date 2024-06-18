@@ -11,6 +11,7 @@ import Link from 'next/link';
 import React, { useState } from 'react'
 import ResourceDeleteButton from './ResourceDeleteButton';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Label } from '@/components/ui/label';
 
 
 export const columns: ColumnDef<Resource>[] = [
@@ -140,6 +141,7 @@ const MyResourcesList = ({ data, pageCount }: { data: Resource[], pageCount: num
     return (
         <div className='space-y-6'>
             <div className="font-medium min-w-max">
+                <Label>Filter By Status</Label>
                 <Select value={urlSearchParams.get("status") || "all"} onValueChange={(e) => { setQueryParams({ status: e }) }}>
                     <SelectTrigger className="w-[180px]">
                         <SelectValue placeholder="Status" />
@@ -151,7 +153,6 @@ const MyResourcesList = ({ data, pageCount }: { data: Resource[], pageCount: num
                         <SelectItem value="declined">Decliend</SelectItem>
                     </SelectContent>
                 </Select>
-
             </div>
             <CustomTable<Resource> table={table} />
             <CustomTablePagination<Resource> table={table} />

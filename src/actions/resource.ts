@@ -7,6 +7,11 @@ import { deleteFromCloudinary, uploadToCloudinary } from "@/lib/cloudinary";
 import { and, count, desc, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
+interface GetResourceParameter {
+  page: number;
+  status: "all" | "pending" | "approved" | "declined";
+}
+
 const authGuard = async (roleGuard?: boolean) => {
   const session = await getSession();
 
@@ -24,10 +29,7 @@ const authGuard = async (roleGuard?: boolean) => {
 export const getMyResources = async ({
   page,
   status,
-}: {
-  page: number;
-  status: "all" | "pending" | "approved" | "declined";
-}) => {
+}: GetResourceParameter) => {
   try {
     const user = await authGuard();
 
@@ -49,14 +51,19 @@ export const getMyResources = async ({
   }
 };
 
-export const getAllResources = async (page: number) => {
+export const getAllResources = async ({
+  page,
+  status,
+}: GetResourceParameter) => {
   try {
     await authGuard(true);
+
     const allResources = await db.query.resources.findMany({
       offset: (page - 1) * 10,
       limit: 10,
       orderBy: [desc(resources.createdAt)],
       with: { author: true },
+      where: status == "all" ? undefined : eq(resources.status, status),
     });
 
     return allResources;
@@ -119,7 +126,7 @@ export const getResourceById = async (id: string) => {
 };
 
 export const createResource = async (
-  data: Pick<Resource, "description" | "tags" | "title"> & {
+  data: Pick<Resource, "description" | "tags" | "title" | "link"> & {
     coverImageBuffer: Uint8Array;
   }
 ) => {
@@ -133,6 +140,7 @@ export const createResource = async (
       description: data.description,
       tags: data.tags,
       coverImage: uploadedImg?.secure_url || "",
+      link: data.link,
       authorId: user.id,
     };
 
@@ -151,19 +159,20 @@ export const createResource = async (
 
 export const editResource = async (
   id: string,
-  data: Pick<Resource, "description" | "tags" | "title"> & {
+  data: Pick<Resource, "description" | "tags" | "title" | "link"> & {
     coverImageBuffer?: Uint8Array;
   }
 ) => {
   try {
     const user = await authGuard();
 
-    const payload: Pick<Resource, "title" | "description" | "tags"> & {
+    const payload: Pick<Resource, "title" | "description" | "tags" | "link"> & {
       coverImage?: string;
     } = {
       title: data.title,
       description: data.description,
       tags: data.tags,
+      link: data.link,
     };
 
     if (data.coverImageBuffer) {

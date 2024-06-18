@@ -16,6 +16,7 @@ const formSchema = z.object({
     tags: z.string().min(3),
     title: z.string().min(5).max(100),
     description: z.string().min(5),
+    link: z.string().url(),
 }).refine((val) => {
     const pattern = /^#\w+(?:,#\w+)*$/;
     return pattern.test(val.tags);
@@ -47,7 +48,8 @@ const CreateResourceForm = () => {
         defaultValues: {
             tags: "",
             description: "",
-            title: ""
+            title: "",
+            link: ''
         }
     })
     const formControl = form.control
@@ -73,10 +75,11 @@ const CreateResourceForm = () => {
 
             const coverImageBuffer = await convertFileToBuffer(coverImageFile)
 
-            const r = await createResource({
+            await createResource({
                 description: values?.description,
                 title: values?.title,
                 tags: values?.tags,
+                link: values?.link,
                 coverImageBuffer
             })
 
@@ -105,6 +108,7 @@ const CreateResourceForm = () => {
                     <CustomFileInput label='Cover Image' file={coverImageFile} setFile={setCoverImageFile} accept='image/*' />
 
                     <CustomFormField control={formControl} placeholder="Title" name="title" label="Title" />
+                    <CustomFormField control={formControl} placeholder="Link" name="link" label="Link" />
                     <CustomFormField control={formControl} placeholder="Description" name="description" label="Description" isTextArea />
                     <CustomFormField control={formControl} placeholder="Eg: #js,#notion" name="tags" label="Tags" isTextArea />
 

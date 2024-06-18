@@ -17,6 +17,7 @@ const formSchema = z.object({
     tags: z.string().min(3),
     title: z.string().min(5).max(100),
     description: z.string().min(5),
+    link: z.string().url()
 }).refine((val) => {
     const pattern = /^#\w+(?:,#\w+)*$/;
     return pattern.test(val.tags);
@@ -48,7 +49,8 @@ const EditResourceForm = ({ resource }: { resource: Resource }) => {
         defaultValues: {
             tags: resource.tags,
             description: resource.description,
-            title: resource.title
+            title: resource.title,
+            link: resource.link
         }
     })
     const formControl = form.control
@@ -64,6 +66,7 @@ const EditResourceForm = ({ resource }: { resource: Resource }) => {
                 description: values?.description,
                 title: values?.title,
                 tags: values?.tags,
+                link: values.link
             }
 
             if (coverImageFile) {
@@ -74,7 +77,6 @@ const EditResourceForm = ({ resource }: { resource: Resource }) => {
             await editResource(resource.id, payload)
 
             toast.success("Successfully edited an resource!")
-            form.reset()
             setCoverImageFile(null)
             router.push("/dashboard/my-resources")
 
@@ -98,6 +100,7 @@ const EditResourceForm = ({ resource }: { resource: Resource }) => {
                     <CustomFileInput label='Cover Image' file={coverImageFile} setFile={setCoverImageFile} defaultPreview={resource.coverImage!} accept='image/*' />
 
                     <CustomFormField control={formControl} placeholder="Title" name="title" label="Title" />
+                    <CustomFormField control={formControl} placeholder="Link" name="link" label="Link" />
                     <CustomFormField control={formControl} placeholder="Description" name="description" label="Description" isTextArea />
                     <CustomFormField control={formControl} placeholder="Eg: #js,#notion" name="tags" label="Tags" isTextArea />
 

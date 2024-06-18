@@ -1,7 +1,7 @@
 "use client"
 import { updateResourceStatus } from '@/actions/resource';
 import { CustomTable, CustomTablePagination } from '@/components/table';
-import { Badge } from '@/components/ui/badge';
+import { Label } from '@/components/ui/label';
 import { Select, SelectItem, SelectContent, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Resource, User } from '@/db/schema'
 import useQueryParams from '@/hooks/useQueryParams';
@@ -105,7 +105,7 @@ export const columns: ColumnDef<Resource>[] = [
 
 const AllresourcesList = ({ data, pageCount }: { data: Resource[], pageCount: number }) => {
 
-    const { urlSearchParams } = useQueryParams();
+    const { urlSearchParams, setQueryParams } = useQueryParams();
     const queryPage = urlSearchParams.get("page")
     const isPageOne = !urlSearchParams.get("page") || queryPage == "1"
     const [pagination, setPagination] = useState({ pageIndex: isPageOne ? 0 : +(queryPage || 1) - 1, pageSize: 10 })
@@ -128,6 +128,20 @@ const AllresourcesList = ({ data, pageCount }: { data: Resource[], pageCount: nu
 
     return (
         <div className='space-y-6'>
+            <div className="font-medium min-w-max">
+                <Label>Filter By Status</Label>
+                <Select value={urlSearchParams.get("status") || "all"} onValueChange={(e) => { setQueryParams({ status: e }) }}>
+                    <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="all">All</SelectItem>
+                        <SelectItem value="pending">Pending</SelectItem>
+                        <SelectItem value="approved">Approved</SelectItem>
+                        <SelectItem value="declined">Decliend</SelectItem>
+                    </SelectContent>
+                </Select>
+            </div>
             <CustomTable<Resource> table={table} />
             <CustomTablePagination<Resource> table={table} />
         </div>
