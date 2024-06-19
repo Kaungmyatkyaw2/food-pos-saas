@@ -74,7 +74,6 @@ export const getAllResources = async ({
 
 export const getResourcesForReader = async (page: number) => {
   try {
-    await authGuard();
     const allResources = await db.query.resources.findMany({
       where: eq(resources.status, "approved"),
       offset: (page - 1) * 10,
@@ -118,6 +117,9 @@ export const getResourceById = async (id: string) => {
   try {
     const foundResource = await db.query.resources.findFirst({
       where: (resource, { eq }) => eq(resource.id, id),
+      with: {
+        author: true,
+      },
     });
     return foundResource;
   } catch (error) {

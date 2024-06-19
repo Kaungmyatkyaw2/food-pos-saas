@@ -1,6 +1,7 @@
 "use client"
 import { updateResourceStatus } from '@/actions/resource';
 import { CustomTable, CustomTablePagination } from '@/components/table';
+import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Select, SelectItem, SelectContent, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Resource, User } from '@/db/schema'
@@ -27,6 +28,17 @@ export const columns: ColumnDef<Resource>[] = [
                 <h1 className="truncate font-bold">{row.getValue("title")}</h1>
                 <p className="text-xs text-neutral-500 overflow-ellipsis overflow-hidden">{row.original.description}</p>
             </div>;
+        },
+    },
+    {
+        accessorKey: "link",
+        header: () => <div>Link</div>,
+        cell: ({ row }) => {
+            return <Button variant={"link"} asChild>
+                <a href={row.getValue("link")} target='_blank'>
+                    View
+                </a>
+            </Button>
         },
     },
     {
