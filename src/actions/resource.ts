@@ -4,7 +4,7 @@ import { db } from "@/db";
 import { Resource, resources, users } from "@/db/schema";
 import { getSession } from "@/lib/auth";
 import { deleteFromCloudinary, uploadToCloudinary } from "@/lib/cloudinary";
-import { and, count, desc, eq } from "drizzle-orm";
+import { and, count, desc, eq, ilike, inArray } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
 interface GetResourceParameter {
@@ -72,10 +72,20 @@ export const getAllResources = async ({
   }
 };
 
-export const getResourcesForReader = async (page: number) => {
+export const getResourcesForReader = async ({
+  page,
+  search,
+}: {
+  page: number;
+  search?: string;
+}) => {
   try {
+    const filterate = !search
+      ? eq(resources.status, "approved")
+      : and(eq(resources.status, "approved"), ilike(resources.tags, `%${search}%`));
+
     const allResources = await db.query.resources.findMany({
-      where: eq(resources.status, "approved"),
+      where: filterate,
       offset: (page - 1) * 10,
       limit: 10,
       orderBy: [desc(resources.createdAt)],

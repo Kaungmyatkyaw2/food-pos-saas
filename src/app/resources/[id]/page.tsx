@@ -1,6 +1,5 @@
 import { getResourceById } from '@/actions/resource'
-import { CustomAvatar, TimeAgo } from '@/components/common'
-import { Badge } from '@/components/ui/badge'
+import { BadgeContainer, CustomAvatar, TimeAgo } from '@/components/common'
 import { Button } from '@/components/ui/button'
 import { Home } from 'lucide-react'
 import Link from 'next/link'
@@ -34,8 +33,8 @@ const ResourceDetailPage = async ({ params }: { params: { id: string } }) => {
                 <img className='object-cover w-full max-h-[300px] h-fit' src={resource.coverImage} alt='coverImage' />
             </div>
             <div className='mt-6 text-sm' dangerouslySetInnerHTML={renderTextWithLineBreaks(resource.description)} />
-            <div className='flex gap-2 mt-8'>
-                {resource.tags.split(",").map((tag, index) => <Badge key={index} className='w-fit h-fit' variant={"secondary"}>{tag}</Badge>)}
+            <div className='flex gap-2 mt-8 flex-wrap'>
+                <BadgeContainer tags={resource.tags.split(",")} />
             </div>
             <div>
                 <Button className='w-full mt-8' variant={"default"} asChild>
