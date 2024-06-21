@@ -29,7 +29,7 @@ const AccountDropDown = () => {
     }
 
     const toDashboard = () => {
-        router.push("/dashboard")
+        router.push("/dashboard/account")
     }
 
 
