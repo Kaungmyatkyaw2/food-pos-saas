@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
-import { CustomFormField } from '@/components/form'
+import { CustomFormField, CustomPasswordField } from '@/components/form'
 import { Button } from '@/components/ui/button'
 import { RotateCcw } from "lucide-react"
 import { toast } from 'sonner'
@@ -66,9 +66,9 @@ const ChangePasswordForm = () => {
                     <h1 className='font-bold sm:text-3xl text-2xl'>Change your password🛡️</h1>
                 </div>
                 <form autoComplete='off' onSubmit={form.handleSubmit(onSubmit)} className='space-y-5 '>
-                    <CustomFormField control={formControl} placeholder="*********" name="oldPassword" label="Old Password" />
-                    <CustomFormField control={formControl} placeholder="*********" name="password" label="New Password" />
-                    <CustomFormField control={formControl} placeholder="*********" name="confirmPassword" label="Confirm Password" />
+                    <CustomPasswordField control={formControl} placeholder="*********" name="oldPassword" label="Old Password" />
+                    <CustomPasswordField control={formControl} placeholder="*********" name="password" label="New Password" />
+                    <CustomPasswordField control={formControl} placeholder="*********" name="confirmPassword" label="Confirm Password" />
 
                     <div className='flex space-x-6'>
                         <Button

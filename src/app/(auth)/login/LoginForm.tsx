@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
-import { CustomFormField } from '@/components/form'
+import { CustomFormField, CustomPasswordField } from '@/components/form'
 import { Button } from '@/components/ui/button'
 import { RotateCcw } from "lucide-react"
 import { toast } from 'sonner'
@@ -67,7 +67,7 @@ const LoginForm = () => {
                 </div>
                 <form autoComplete='off' onSubmit={form.handleSubmit(onSubmit)} className='space-y-5 '>
                     <CustomFormField control={formControl} placeholder="johndoe@gmail.com" name="email" label="Email" />
-                    <CustomFormField control={formControl} placeholder="*********" name="password" label="Password" />
+                    <CustomPasswordField control={formControl} placeholder="*********" name="password" label="Password" />
                     <Button aria-label='login-button' type='submit' className='w-full' disabled={isLoading}>
                         {isLoading &&
                             <RotateCcw className="mr-2 h-4 w-4 animate-spin" />
