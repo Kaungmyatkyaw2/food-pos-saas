@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Resource } from '@/db/schema'
 import useQueryParams from '@/hooks/useQueryParams';
 import { ColumnDef, getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table'
-import { Edit, Trash } from 'lucide-react';
+import { ArrowRight, Edit, Trash } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react'
@@ -103,6 +103,11 @@ export const columns: ColumnDef<Resource>[] = [
 
             return (
                 <div className="flex justify-end gap-x-2">
+                    <Button className='rounded-full border bg-neutral-200' size={"icon"} variant={"secondary"} asChild>
+                        <Link href={`/resources/${row.original.id}`}>
+                            <ArrowRight className='w-3 h-3' />
+                        </Link>
+                    </Button>
                     <Button className='rounded-full border bg-neutral-200' size={"icon"} variant={"secondary"} asChild>
                         <Link href={`/dashboard/my-resources/edit/${row.original.id}`}>
                             <Edit className='w-3 h-3' />

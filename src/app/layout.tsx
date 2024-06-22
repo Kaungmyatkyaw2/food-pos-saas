@@ -32,7 +32,9 @@ export default function RootLayout({
           <Toaster richColors />
           <NextTopLoader />
           <Header />
-          {children}
+          <main className="min-h-[75vh]">
+            {children}
+          </main>
           <Footer />
         </ProviderWrapper>
       </body>

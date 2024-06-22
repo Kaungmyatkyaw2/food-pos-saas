@@ -7,7 +7,9 @@ import { Select, SelectItem, SelectContent, SelectTrigger, SelectValue } from '@
 import { Resource, User } from '@/db/schema'
 import useQueryParams from '@/hooks/useQueryParams';
 import { ColumnDef, getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table'
+import { ArrowRight } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import React, { useState } from 'react'
 
 
@@ -112,7 +114,23 @@ export const columns: ColumnDef<Resource>[] = [
             );
         },
     },
+    {
+        accessorKey: "actions",
+        header: () => <div className="text-right min-w-max">Actions</div>,
+        cell: ({ row }) => {
 
+            return (
+                <div className="flex justify-end gap-x-2">
+                    <Button className='rounded-full border bg-neutral-200' size={"icon"} variant={"secondary"} asChild>
+                        <Link href={`/resources/${row.original.id}`}>
+                            <ArrowRight className='w-3 h-3' />
+                        </Link>
+                    </Button>
+
+                </div>
+            );
+        },
+    },
 ];
 
 const AllresourcesList = ({ data, pageCount }: { data: Resource[], pageCount: number }) => {

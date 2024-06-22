@@ -82,7 +82,10 @@ export const getResourcesForReader = async ({
   try {
     const filterate = !search
       ? eq(resources.status, "approved")
-      : and(eq(resources.status, "approved"), ilike(resources.tags, `%${search}%`));
+      : and(
+          eq(resources.status, "approved"),
+          ilike(resources.tags, `%${search}%`)
+        );
 
     const allResources = await db.query.resources.findMany({
       where: filterate,
@@ -125,12 +128,24 @@ export const getMyResourcesCount = async () => {
 
 export const getResourceById = async (id: string) => {
   try {
+    const session = await getSession();
+
     const foundResource = await db.query.resources.findFirst({
       where: (resource, { eq }) => eq(resource.id, id),
       with: {
         author: true,
       },
     });
+
+    if (!session?.user.isAdmin) {
+      if (
+        foundResource?.status != "approved" &&
+        session?.user.id != foundResource?.author?.id
+      ) {
+        throw new Error("Unauthorized!");
+      }
+    }
+
     return foundResource;
   } catch (error) {
     throw error;
