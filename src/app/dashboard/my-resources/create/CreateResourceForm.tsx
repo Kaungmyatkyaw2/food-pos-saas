@@ -61,10 +61,10 @@ const CreateResourceForm = () => {
             return;
         }
 
-        const maxSize = 0.5 * 1024 * 1024;
+        const maxSize = 2 * 1024 * 1024;
 
         if (coverImageFile.size > maxSize) {
-            toast.error("File size exceeds 0.5MB");
+            toast.error("File size exceeds 2MB");
             return;
         }
 

@@ -60,6 +60,15 @@ const EditResourceForm = ({ resource }: { resource: Resource }) => {
         setIsLoading(true)
 
 
+
+        const maxSize = 2 * 1024 * 1024;
+
+        if (coverImageFile && coverImageFile?.size > maxSize) {
+            toast.error("File size exceeds 2MB");
+            return;
+        }
+
+
         try {
 
             const payload: any = {

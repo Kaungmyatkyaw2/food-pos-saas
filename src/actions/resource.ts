@@ -101,6 +101,27 @@ export const getResourcesForReader = async ({
   }
 };
 
+export const getResourcesCountForReader = async (search?: string) => {
+  const filterate = !search
+    ? eq(resources.status, "approved")
+    : and(
+        eq(resources.status, "approved"),
+        ilike(resources.tags, `%${search}%`)
+      );
+
+  try {
+    await authGuard();
+    const resourcesForReader = await db
+      .select({ count: count() })
+      .from(resources)
+      .where(filterate);
+
+    return Math.ceil(resourcesForReader[0]?.count / 10);
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const getAllResourcesCount = async () => {
   try {
     await authGuard(true);
